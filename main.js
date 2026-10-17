@@ -20,6 +20,7 @@ document.getElementById("openBtn").addEventListener("click", () => {
   setTimeout(() => {
     document.documentElement.classList.remove("locked");
     cover.classList.add("gone");
+    lenis?.start();
     measure();
   }, 1400);
 });
@@ -81,24 +82,38 @@ function update(y) {
 }
 
 let current = scrollY;
-let ticking = false;
 
-function loop() {
-  const target = scrollY;
-  current += (target - current) * 0.16;
-  if (Math.abs(target - current) < 0.4) current = target;
-  update(current);
-  if (current !== target) requestAnimationFrame(loop);
-  else ticking = false;
+const lenis =
+  window.Lenis && !reduceMotion
+    ? new Lenis({ autoRaf: true, lerp: 0.1, wheelMultiplier: 1.1, touchMultiplier: 1.4 })
+    : null;
+
+if (lenis) {
+  lenis.stop();
+  lenis.on("scroll", ({ scroll }) => {
+    current = scroll;
+    update(current);
+  });
+} else {
+  let ticking = false;
+  addEventListener("scroll", () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      ticking = false;
+      current = scrollY;
+      update(current);
+    });
+  }, { passive: true });
 }
 
-addEventListener("scroll", () => {
-  if (!ticking) {
-    ticking = true;
-    requestAnimationFrame(loop);
-  }
-}, { passive: true });
-addEventListener("resize", measure);
+let lastWidth = innerWidth;
+addEventListener("resize", () => {
+  // La barra de direcciones del móvil cambia la altura al hacer scroll; solo re-medimos si cambia el ancho.
+  if (innerWidth === lastWidth && Math.abs(document.documentElement.clientHeight - vh) < 120) return;
+  lastWidth = innerWidth;
+  measure();
+});
 addEventListener("load", measure);
 document.fonts?.ready.then(measure);
 
@@ -160,16 +175,32 @@ new IntersectionObserver(([e]) => petals.classList.toggle("on", e.isIntersecting
   const canvas = document.getElementById("particles");
   const ctx = canvas.getContext("2d");
   let w, h, dpr;
-  const count = innerWidth < 700 ? 34 : 60;
+  const mobile = innerWidth < 700;
+  const count = mobile ? 22 : 50;
   const dots = [];
 
+  const sprite = document.createElement("canvas");
+  sprite.width = sprite.height = 64;
+  const sctx = sprite.getContext("2d");
+  const g = sctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  g.addColorStop(0, "rgba(255, 236, 190, 1)");
+  g.addColorStop(0.3, "rgba(222, 186, 110, .5)");
+  g.addColorStop(1, "rgba(222, 186, 110, 0)");
+  sctx.fillStyle = g;
+  sctx.fillRect(0, 0, 64, 64);
+
   function resize() {
-    dpr = Math.min(devicePixelRatio || 1, 2);
+    dpr = mobile ? 1 : Math.min(devicePixelRatio || 1, 1.5);
     w = canvas.width = innerWidth * dpr;
     h = canvas.height = innerHeight * dpr;
   }
   resize();
-  addEventListener("resize", resize);
+  let lastW = innerWidth;
+  addEventListener("resize", () => {
+    if (innerWidth === lastW) return;
+    lastW = innerWidth;
+    resize();
+  });
 
   for (let i = 0; i < count; i++) {
     dots.push({
@@ -204,16 +235,11 @@ new IntersectionObserver(([e]) => petals.classList.toggle("on", e.isIntersecting
       const alpha = 0.35 + 0.45 * Math.sin(time * 0.001 * d.tw + d.a) ** 2;
       const x = d.x * w;
       const y = d.y * h;
-      const r = d.r * dpr;
-      const g = ctx.createRadialGradient(x, y, 0, x, y, r * 4);
-      g.addColorStop(0, `rgba(255, 236, 190, ${alpha})`);
-      g.addColorStop(0.3, `rgba(222, 186, 110, ${alpha * 0.5})`);
-      g.addColorStop(1, "rgba(222, 186, 110, 0)");
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(x, y, r * 4, 0, Math.PI * 2);
-      ctx.fill();
+      const size = d.r * dpr * 8;
+      ctx.globalAlpha = alpha;
+      ctx.drawImage(sprite, x - size / 2, y - size / 2, size, size);
     }
+    ctx.globalAlpha = 1;
     requestAnimationFrame(draw);
   }
   requestAnimationFrame(draw);
