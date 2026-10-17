@@ -505,7 +505,7 @@ img { display: block; max-width: 100%; }
 }
 .verse__text .w {
   display: inline-block;
-  opacity: calc(.12 + var(--w, 0) * .88);
+  opacity: calc(.26 + var(--w, 0) * .74);
   transform: translateY(calc((1 - var(--w, 0)) * 10px));
 }
 .verse__text .w--gold { color: var(--gold-deep); font-weight: 400; }
@@ -901,6 +901,12 @@ img { display: block; max-width: 100%; }
   50% { transform: translate3d(-20px, 56svh, 0) rotate(200deg); }
   75% { transform: translate3d(25px, 84svh, 0) rotate(290deg); }
   100% { transform: translate3d(0, 112svh, 0) rotate(380deg); }
+}
+
+/* ---------- Recorrido móvil ---------- */
+
+@media (max-width: 700px) {
+  .scene { height: calc(var(--mobile-len, var(--len, 160)) * 1svh); }
 }
 
 /* ---------- Escritorio ---------- */

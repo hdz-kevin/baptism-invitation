@@ -130,7 +130,7 @@ function setupVerse() {
   const n = spans.length;
 
   return (p) => {
-    const t = clamp((p - 0.1) / 0.5) * (n + 2);
+    const t = clamp((p + 0.04) / 0.44) * (n + 2);
     spans.forEach((s, i) => s.style.setProperty("--w", smooth(clamp(t - i, 0, 1)).toFixed(3)));
   };
 }

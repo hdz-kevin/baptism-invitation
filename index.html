@@ -14,7 +14,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="vendor/lenis.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=2" />
 </head>
 <body>
 
@@ -56,11 +56,11 @@
   <main>
 
     <!-- 1 · Cielo -->
-    <section class="scene hero" data-scene style="--len: 200">
+    <section class="scene hero" data-scene style="--len: 200; --mobile-len: 140">
       <div class="sticky">
         <div class="rays" aria-hidden="true"></div>
 
-        <div class="hero__content" data-t="in:0,.6;out:.7,1">
+        <div class="hero__content" data-t="in:0,.55;out:.82,1">
           <svg class="hero__cross"><use href="#cross" /></svg>
           <p class="eyebrow">Acompáñanos a celebrar</p>
           <h1 class="hero__title script">Nuestro Bautizo</h1>
@@ -91,12 +91,12 @@
     </section>
 
     <!-- 2 · Los hermanitos -->
-    <section class="scene twins" data-scene style="--len: 280">
+    <section class="scene twins" data-scene style="--len: 280; --mobile-len: 180">
       <div class="sticky">
-        <p class="eyebrow twins__intro" data-t="in:0,.15;out:.88,1">Dos corazones · una misma bendición</p>
+        <p class="eyebrow twins__intro" data-t="in:-.08,.04;out:.94,1">Dos corazones · una misma bendición</p>
 
         <div class="twins__stage">
-          <figure class="kid kid--girl" data-t="in:.05,.38;out:.88,1">
+          <figure class="kid kid--girl" data-t="in:-.08,.10;out:.94,1">
             <div class="kid__frame"><div class="kid__img"><img src="images/girl.jpeg" alt="Alitel Guadalupe" /></div></div>
             <figcaption>
               <span class="kid__first script">Alitel</span>
@@ -104,9 +104,9 @@
             </figcaption>
           </figure>
 
-          <div class="twins__amp script" data-t="in:.42,.58;out:.88,1">&amp;</div>
+          <div class="twins__amp script" data-t="in:.16,.28;out:.94,1">&amp;</div>
 
-          <figure class="kid kid--boy" data-t="in:.22,.55;out:.88,1">
+          <figure class="kid kid--boy" data-t="in:.04,.25;out:.94,1">
             <div class="kid__frame"><div class="kid__img"><img src="images/boy.jpeg" alt="Angel David" /></div></div>
             <figcaption>
               <span class="kid__first script">Angel</span>
@@ -115,22 +115,22 @@
           </figure>
         </div>
 
-        <p class="twins__surname" data-t="in:.58,.74;out:.88,1">López Hernández</p>
+        <p class="twins__surname" data-t="in:.26,.40;out:.94,1">López Hernández</p>
       </div>
     </section>
 
     <!-- 3 · Oración -->
-    <section class="scene verse" data-scene id="verse" style="--len: 250">
+    <section class="scene verse" data-scene id="verse" style="--len: 250; --mobile-len: 170">
       <div class="sticky">
-        <div class="verse__wrap" data-t="in:0,.1;out:.62,.72">
+        <div class="verse__wrap" data-t="in:-.1,.02;out:.76,.90">
           <svg class="verse__dove"><use href="#dove" /></svg>
           <p class="verse__text" id="verseText">Jesús, hoy nos presentamos ante ti para ser bañados por la gracia de tu amor.</p>
         </div>
 
-        <div class="drop" data-t="in:.7,.84" aria-hidden="true">
+        <div class="drop" data-t="in:.68,.80" aria-hidden="true">
           <svg><use href="#drop" /></svg>
         </div>
-        <div class="ripple" data-t="in:.82,1" aria-hidden="true">
+        <div class="ripple" data-t="in:.77,1" aria-hidden="true">
           <i></i><i></i><i></i>
         </div>
       </div>
@@ -227,19 +227,19 @@
     </section>
 
     <!-- 8 · Cierre -->
-    <section class="scene finale" data-scene id="finale" style="--len: 190">
+    <section class="scene finale" data-scene id="finale" style="--len: 190; --mobile-len: 150">
       <div class="sticky">
         <div class="petals" id="petals" aria-hidden="true"></div>
 
         <div class="finale__duo">
-          <div class="finale__photo finale__photo--girl" data-t="in:0,.45"><img src="images/girl.jpeg" alt="" /></div>
-          <div class="finale__photo finale__photo--boy" data-t="in:0,.45"><img src="images/boy.jpeg" alt="" /></div>
+          <div class="finale__photo finale__photo--girl" data-t="in:-.12,.18"><img src="images/girl.jpeg" alt="" /></div>
+          <div class="finale__photo finale__photo--boy" data-t="in:-.12,.18"><img src="images/boy.jpeg" alt="" /></div>
         </div>
 
-        <h2 class="finale__title script" data-t="in:.3,.65">Los esperamos</h2>
-        <p class="finale__sign" data-t="in:.55,.8">Con amor, familia López Hernández</p>
+        <h2 class="finale__title script" data-t="in:.08,.36">Los esperamos</h2>
+        <p class="finale__sign" data-t="in:.25,.5">Con amor, familia López Hernández</p>
 
-        <div class="finale__doves" data-t="in:.45,1" aria-hidden="true">
+        <div class="finale__doves" data-t="in:.3,1" aria-hidden="true">
           <svg class="dove dove--c"><use href="#dove" /></svg>
           <svg class="dove dove--d"><use href="#dove" /></svg>
         </div>
@@ -249,6 +249,6 @@
   </main>
 
   <script src="vendor/lenis.min.js"></script>
-  <script src="main.js"></script>
+  <script src="main.js?v=2"></script>
 </body>
 </html>
