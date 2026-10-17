@@ -23,9 +23,6 @@
 
 html { -webkit-text-size-adjust: 100%; }
 html.locked { overflow: hidden; }
-html.lenis,
-html.lenis body { height: auto; }
-.lenis:not(.lenis-autoToggle).lenis-stopped { overflow: clip; }
 
 body {
   margin: 0;
@@ -189,14 +186,16 @@ img { display: block; max-width: 100%; }
 .opened .cover__center { opacity: 0; transform: scale(1.15); }
 .cover.gone { display: none; }
 
-/* ---------- Escenas con scroll ---------- */
+/* ---------- Secciones animadas ---------- */
 
-.scene { position: relative; height: calc(var(--len, 300) * 1svh); }
+.scene {
+  position: relative;
+  min-height: 100svh;
+}
 
 .sticky {
-  position: sticky;
-  top: 0;
-  height: 100svh;
+  position: relative;
+  min-height: 100svh;
   overflow: hidden;
   display: grid;
   place-items: center;
@@ -902,12 +901,6 @@ img { display: block; max-width: 100%; }
   50% { transform: translate3d(-20px, 56svh, 0) rotate(200deg); }
   75% { transform: translate3d(25px, 84svh, 0) rotate(290deg); }
   100% { transform: translate3d(0, 112svh, 0) rotate(380deg); }
-}
-
-/* ---------- Recorrido móvil ---------- */
-
-@media (max-width: 700px) {
-  .scene { height: calc(var(--mobile-len, var(--len, 160)) * 1svh); }
 }
 
 /* ---------- Escritorio ---------- */

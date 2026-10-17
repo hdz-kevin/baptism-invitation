@@ -22,7 +22,7 @@ export default defineConfig({
       name: "invitation-dev",
       apply: "serve",
       transformIndexHtml(html) {
-        return html.replace("./dist/app.js?v=4", "./src/main.js");
+        return html.replace("./dist/app.js?v=5", "./src/main.js");
       },
       configureServer(server) {
         server.middlewares.use((req, res, next) => {

@@ -1,6 +1,5 @@
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Lenis from "lenis";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -13,97 +12,89 @@ const CONFIG = {
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 const mobile = matchMedia("(max-width: 700px)").matches;
-const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
-const smooth = (t) => t * t * (3 - 2 * t);
 
 if ("scrollRestoration" in history) history.scrollRestoration = "manual";
 window.scrollTo(0, 0);
+
+const heroTimeline = setupHero();
 
 /* ---------- Portada ---------- */
 
 const cover = document.getElementById("cover");
 document.getElementById("openBtn").addEventListener("click", () => {
   document.body.classList.add("opened", "intro");
+  heroTimeline.play();
   setTimeout(() => {
     document.documentElement.classList.remove("locked");
     cover.classList.add("gone");
-    lenis?.start();
     requestAnimationFrame(() => ScrollTrigger.refresh());
   }, 1400);
 });
 
-/* ---------- Motor de escenas ---------- */
+/* ---------- Animaciones de entrada ---------- */
 
-const parseRanges = (str) =>
-  str.split(";").map((part) => {
-    const [name, range] = part.split(":");
-    const [a, b] = range.split(",").map(Number);
-    return { prop: `--${name.trim()}`, a, b };
-  });
-
-const scenes = [...document.querySelectorAll("[data-scene]")].map((el) => ({
-  el,
-  mode: el.dataset.scene || "sticky",
-  last: -1,
-  targets: [...el.querySelectorAll("[data-t]")].map((t) => ({ el: t, ranges: parseRanges(t.dataset.t) })),
-}));
-
-const hooks = {
-  verse: setupVerse(),
-};
-
-function applyScene(scene, p) {
-  if (Math.abs(p - scene.last) < 0.0004) return;
-  scene.last = p;
-
-  for (const t of scene.targets) {
-    for (const r of t.ranges) {
-      const span = r.b - r.a || 1;
-      t.el.style.setProperty(r.prop, smooth(clamp((p - r.a) / span)).toFixed(4));
-    }
+function onceOnEnter(trigger, animation, start = "top 72%") {
+  if (reduceMotion) {
+    animation.progress(1);
+    return;
   }
-  hooks[scene.el.id]?.(p);
-}
-
-const lenis = reduceMotion
-  ? null
-  : new Lenis({
-      autoRaf: false,
-      lerp: 0.1,
-      syncTouch: true,
-      syncTouchLerp: mobile ? 0.34 : 0.12,
-      touchMultiplier: 1,
-      wheelMultiplier: 1,
-    });
-
-if (lenis) {
-  lenis.stop();
-  lenis.on("scroll", ScrollTrigger.update);
-  gsap.ticker.add((time) => lenis.raf(time * 1000));
-  gsap.ticker.lagSmoothing(0);
-
-  // Un retraso corto suaviza el gesto sin despegar la página del dedo.
-  const scrub = mobile ? 0.28 : 0.4;
-
-  for (const scene of scenes) {
-    ScrollTrigger.create({
-      trigger: scene.el,
-      start: scene.mode === "view" ? "top bottom" : "top top",
-      end: scene.mode === "view" ? "bottom top" : "bottom bottom",
-      scrub,
-      onUpdate: (self) => applyScene(scene, self.progress),
-    });
-  }
-
   ScrollTrigger.create({
-    start: 0,
-    end: "max",
-    scrub: true,
-    onUpdate: (self) => {
-      document.documentElement.style.setProperty("--g", self.progress.toFixed(4));
-    },
+    trigger,
+    start,
+    once: true,
+    onEnter: () => animation.play(),
   });
 }
+
+function setupHero() {
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power2.out" } });
+  tl.to(".clouds", { "--in": 1, duration: 1.8 }, 0.2);
+  tl.to(".hero__doves", { "--in": 1, duration: 1.5 }, 0.55);
+  return tl;
+}
+
+function setupTwins() {
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.to(".twins__intro", { "--in": 1, duration: 0.55 });
+  tl.to(".kid--girl", { "--in": 1, duration: 0.9 }, 0.12);
+  tl.to(".kid--boy", { "--in": 1, duration: 0.9 }, 0.25);
+  tl.to(".twins__amp", { "--in": 1, duration: 0.5 }, 0.45);
+  tl.to(".twins__surname", { "--in": 1, duration: 0.65 }, 0.58);
+  onceOnEnter(".twins", tl);
+}
+
+function setupFinale() {
+  const tl = gsap.timeline({ paused: true, defaults: { ease: "power3.out" } });
+  tl.to(".finale__photo", { "--in": 1, duration: 0.9, stagger: 0.08 });
+  tl.to(".finale__title", { "--in": 1, duration: 0.75 }, 0.32);
+  tl.to(".finale__sign", { "--in": 1, duration: 0.6 }, 0.62);
+  tl.to(".finale__doves", { "--in": 1, duration: 1.6 }, 0.25);
+  onceOnEnter(".finale", tl);
+}
+
+setupTwins();
+setupVerse();
+setupFinale();
+
+const itineraryLine = gsap.to(".timeline__line", {
+  "--in": 1,
+  duration: 1.1,
+  paused: true,
+  ease: "power2.out",
+});
+onceOnEnter(".itinerary", itineraryLine, "top 78%");
+
+// Solo el color del fondo sigue el documento; el contenido no depende del scroll.
+let backgroundTicking = false;
+addEventListener("scroll", () => {
+  if (backgroundTicking) return;
+  backgroundTicking = true;
+  requestAnimationFrame(() => {
+    const max = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+    document.documentElement.style.setProperty("--g", Math.min(1, scrollY / max).toFixed(4));
+    backgroundTicking = false;
+  });
+}, { passive: true });
 
 let lastWidth = innerWidth;
 addEventListener("resize", () => {
@@ -114,7 +105,7 @@ addEventListener("resize", () => {
 addEventListener("load", () => ScrollTrigger.refresh());
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
-/* ---------- Oración palabra por palabra ---------- */
+/* ---------- Oración automática ---------- */
 
 function setupVerse() {
   const el = document.getElementById("verseText");
@@ -124,19 +115,25 @@ function setupVerse() {
     .map((w) => `<span class="w${golden.has(w) ? " w--gold" : ""}">${w}</span>`)
     .join(" ");
   const spans = [...el.children];
+  const wrap = document.querySelector(".verse__wrap");
   const drop = document.querySelector(".drop");
   const ripples = [...document.querySelectorAll(".ripple i")];
 
-  if (reduceMotion) return () => {};
+  if (reduceMotion) {
+    gsap.set(wrap, { "--in": 1 });
+    gsap.set(spans, { opacity: 1, y: 0 });
+    return;
+  }
 
   const tl = gsap.timeline({ paused: true });
+  tl.to(wrap, { "--in": 1, duration: 0.55, ease: "power2.out" });
   tl.to(spans, {
     opacity: 1,
     y: 0,
     duration: 0.8,
     stagger: 0.05,
     ease: "power2.out",
-  });
+  }, 0.12);
   tl.fromTo(drop, { y: "-12vh", opacity: 0 }, { y: "46vh", opacity: 1, duration: 0.7, ease: "power2.in" }, "+=0.2");
   tl.to(drop, { opacity: 0, duration: 0.18 });
   tl.fromTo(
@@ -146,14 +143,7 @@ function setupVerse() {
     "<"
   );
 
-  ScrollTrigger.create({
-    trigger: "#verse",
-    start: "top 68%",
-    once: true,
-    onEnter: () => tl.play(),
-  });
-
-  return () => {};
+  onceOnEnter("#verse", tl, "top 25%");
 }
 
 /* ---------- Apariciones al entrar en pantalla ---------- */
