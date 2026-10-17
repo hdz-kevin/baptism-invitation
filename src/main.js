@@ -1,3 +1,9 @@
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const CONFIG = {
   start: "2026-11-07T12:30:00-06:00",
   // Número con lada de país, sin espacios ni "+", p. ej. "5212311234567". Vacío = se oculta la sección.
@@ -6,6 +12,7 @@ const CONFIG = {
 };
 
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const mobile = matchMedia("(max-width: 700px)").matches;
 const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 const smooth = (t) => t * t * (3 - 2 * t);
 
@@ -21,7 +28,7 @@ document.getElementById("openBtn").addEventListener("click", () => {
     document.documentElement.classList.remove("locked");
     cover.classList.add("gone");
     lenis?.start();
-    measure();
+    requestAnimationFrame(() => ScrollTrigger.refresh());
   }, 1400);
 });
 
@@ -37,85 +44,75 @@ const parseRanges = (str) =>
 const scenes = [...document.querySelectorAll("[data-scene]")].map((el) => ({
   el,
   mode: el.dataset.scene || "sticky",
-  top: 0,
-  height: 0,
   last: -1,
   targets: [...el.querySelectorAll("[data-t]")].map((t) => ({ el: t, ranges: parseRanges(t.dataset.t) })),
 }));
-
-let vh = innerHeight;
-let docMax = 1;
-
-function measure() {
-  vh = document.documentElement.clientHeight;
-  docMax = Math.max(1, document.documentElement.scrollHeight - vh);
-  for (const s of scenes) {
-    s.top = s.el.getBoundingClientRect().top + scrollY;
-    s.height = s.el.offsetHeight;
-    s.last = -1;
-  }
-  update(current);
-}
 
 const hooks = {
   verse: setupVerse(),
 };
 
-function update(y) {
-  document.documentElement.style.setProperty("--g", clamp(y / docMax).toFixed(4));
+function applyScene(scene, p) {
+  if (Math.abs(p - scene.last) < 0.0004) return;
+  scene.last = p;
 
-  for (const s of scenes) {
-    const p =
-      s.mode === "view"
-        ? clamp((y + vh - s.top) / (s.height + vh))
-        : clamp((y - s.top) / Math.max(1, s.height - vh));
-    if (Math.abs(p - s.last) < 0.0005) continue;
-    s.last = p;
-
-    for (const t of s.targets) {
-      for (const r of t.ranges) {
-        t.el.style.setProperty(r.prop, smooth(clamp((p - r.a) / (r.b - r.a))).toFixed(4));
-      }
+  for (const t of scene.targets) {
+    for (const r of t.ranges) {
+      const span = r.b - r.a || 1;
+      t.el.style.setProperty(r.prop, smooth(clamp((p - r.a) / span)).toFixed(4));
     }
-    hooks[s.el.id]?.(p);
   }
+  hooks[scene.el.id]?.(p);
 }
 
-let current = scrollY;
-
-const lenis =
-  window.Lenis && !reduceMotion
-    ? new Lenis({ autoRaf: true, lerp: 0.1, wheelMultiplier: 1.1, touchMultiplier: 1.4 })
-    : null;
+const lenis = reduceMotion
+  ? null
+  : new Lenis({
+      autoRaf: false,
+      lerp: 0.1,
+      syncTouch: true,
+      syncTouchLerp: mobile ? 0.34 : 0.12,
+      touchMultiplier: 1,
+      wheelMultiplier: 1,
+    });
 
 if (lenis) {
   lenis.stop();
-  lenis.on("scroll", ({ scroll }) => {
-    current = scroll;
-    update(current);
-  });
-} else {
-  let ticking = false;
-  addEventListener("scroll", () => {
-    if (ticking) return;
-    ticking = true;
-    requestAnimationFrame(() => {
-      ticking = false;
-      current = scrollY;
-      update(current);
+  lenis.on("scroll", ScrollTrigger.update);
+  gsap.ticker.add((time) => lenis.raf(time * 1000));
+  gsap.ticker.lagSmoothing(0);
+
+  // Un retraso corto suaviza el gesto sin despegar la página del dedo.
+  const scrub = mobile ? 0.28 : 0.4;
+
+  for (const scene of scenes) {
+    ScrollTrigger.create({
+      trigger: scene.el,
+      start: scene.mode === "view" ? "top bottom" : "top top",
+      end: scene.mode === "view" ? "bottom top" : "bottom bottom",
+      scrub,
+      onUpdate: (self) => applyScene(scene, self.progress),
     });
-  }, { passive: true });
+  }
+
+  ScrollTrigger.create({
+    start: 0,
+    end: "max",
+    scrub: true,
+    onUpdate: (self) => {
+      document.documentElement.style.setProperty("--g", self.progress.toFixed(4));
+    },
+  });
 }
 
 let lastWidth = innerWidth;
 addEventListener("resize", () => {
-  // La barra de direcciones del móvil cambia la altura al hacer scroll; solo re-medimos si cambia el ancho.
-  if (innerWidth === lastWidth && Math.abs(document.documentElement.clientHeight - vh) < 120) return;
+  if (innerWidth === lastWidth) return;
   lastWidth = innerWidth;
-  measure();
+  ScrollTrigger.refresh();
 });
-addEventListener("load", measure);
-document.fonts?.ready.then(measure);
+addEventListener("load", () => ScrollTrigger.refresh());
+document.fonts?.ready.then(() => ScrollTrigger.refresh());
 
 /* ---------- Oración palabra por palabra ---------- */
 
@@ -127,12 +124,36 @@ function setupVerse() {
     .map((w) => `<span class="w${golden.has(w) ? " w--gold" : ""}">${w}</span>`)
     .join(" ");
   const spans = [...el.children];
-  const n = spans.length;
+  const drop = document.querySelector(".drop");
+  const ripples = [...document.querySelectorAll(".ripple i")];
 
-  return (p) => {
-    const t = clamp((p + 0.04) / 0.44) * (n + 2);
-    spans.forEach((s, i) => s.style.setProperty("--w", smooth(clamp(t - i, 0, 1)).toFixed(3)));
-  };
+  if (reduceMotion) return () => {};
+
+  const tl = gsap.timeline({ paused: true });
+  tl.to(spans, {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    stagger: 0.05,
+    ease: "power2.out",
+  });
+  tl.fromTo(drop, { y: "-12vh", opacity: 0 }, { y: "46vh", opacity: 1, duration: 0.7, ease: "power2.in" }, "+=0.2");
+  tl.to(drop, { opacity: 0, duration: 0.18 });
+  tl.fromTo(
+    ripples,
+    { scale: 0, opacity: 0.75 },
+    { scale: (i) => [1, 0.7, 0.42][i], opacity: 0, duration: 1.1, stagger: 0.07, ease: "power2.out" },
+    "<"
+  );
+
+  ScrollTrigger.create({
+    trigger: "#verse",
+    start: "top 68%",
+    once: true,
+    onEnter: () => tl.play(),
+  });
+
+  return () => {};
 }
 
 /* ---------- Apariciones al entrar en pantalla ---------- */
@@ -175,7 +196,6 @@ new IntersectionObserver(([e]) => petals.classList.toggle("on", e.isIntersecting
   const canvas = document.getElementById("particles");
   const ctx = canvas.getContext("2d");
   let w, h, dpr;
-  const mobile = innerWidth < 700;
   const count = mobile ? 22 : 50;
   const dots = [];
 
@@ -278,5 +298,3 @@ if (CONFIG.whatsapp) {
   document.getElementById("waBtn").href =
     `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.whatsappMessage)}`;
 }
-
-measure();

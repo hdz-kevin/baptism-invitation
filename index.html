@@ -13,8 +13,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="vendor/lenis.css" />
-  <link rel="stylesheet" href="styles.css?v=2" />
+  <link rel="stylesheet" href="styles.css?v=4" />
 </head>
 <body>
 
@@ -56,7 +55,7 @@
   <main>
 
     <!-- 1 · Cielo -->
-    <section class="scene hero" data-scene style="--len: 200; --mobile-len: 140">
+    <section class="scene hero" data-scene style="--len: 180; --mobile-len: 120">
       <div class="sticky">
         <div class="rays" aria-hidden="true"></div>
 
@@ -91,7 +90,7 @@
     </section>
 
     <!-- 2 · Los hermanitos -->
-    <section class="scene twins" data-scene style="--len: 280; --mobile-len: 180">
+    <section class="scene twins" data-scene style="--len: 240; --mobile-len: 140">
       <div class="sticky">
         <p class="eyebrow twins__intro" data-t="in:-.08,.04;out:.94,1">Dos corazones · una misma bendición</p>
 
@@ -120,17 +119,17 @@
     </section>
 
     <!-- 3 · Oración -->
-    <section class="scene verse" data-scene id="verse" style="--len: 250; --mobile-len: 170">
+    <section class="scene verse" data-scene id="verse" style="--len: 160; --mobile-len: 120">
       <div class="sticky">
-        <div class="verse__wrap" data-t="in:-.1,.02;out:.76,.90">
+        <div class="verse__wrap" data-t="in:-.1,.02;out:.78,.96">
           <svg class="verse__dove"><use href="#dove" /></svg>
           <p class="verse__text" id="verseText">Jesús, hoy nos presentamos ante ti para ser bañados por la gracia de tu amor.</p>
         </div>
 
-        <div class="drop" data-t="in:.68,.80" aria-hidden="true">
+        <div class="drop" aria-hidden="true">
           <svg><use href="#drop" /></svg>
         </div>
-        <div class="ripple" data-t="in:.77,1" aria-hidden="true">
+        <div class="ripple" aria-hidden="true">
           <i></i><i></i><i></i>
         </div>
       </div>
@@ -227,7 +226,7 @@
     </section>
 
     <!-- 8 · Cierre -->
-    <section class="scene finale" data-scene id="finale" style="--len: 190; --mobile-len: 150">
+    <section class="scene finale" data-scene id="finale" style="--len: 170; --mobile-len: 125">
       <div class="sticky">
         <div class="petals" id="petals" aria-hidden="true"></div>
 
@@ -248,7 +247,6 @@
 
   </main>
 
-  <script src="vendor/lenis.min.js"></script>
-  <script src="main.js?v=2"></script>
+  <script type="module" src="./dist/app.js?v=4"></script>
 </body>
 </html>
