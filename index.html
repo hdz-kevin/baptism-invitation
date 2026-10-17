@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="es" class="locked">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Bautizo · Alitel Guadalupe & Angel David</title>
+  <meta name="description" content="Acompáñanos a celebrar el bautizo de Alitel Guadalupe y Angel David. Sábado 07 de noviembre de 2026, Teziutlán, Puebla." />
+  <meta property="og:title" content="Nuestro Bautizo · Alitel Guadalupe & Angel David" />
+  <meta property="og:description" content="Sábado 07 de noviembre de 2026 · Iglesia de San Rafael, Teziutlán, Puebla." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#f6efe6" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Great+Vibes&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="dove" viewBox="0 0 100 70">
+        <path class="dove__wing dove__wing--back" d="M46 38 C 44 24, 36 10, 22 2 C 40 6, 56 18, 62 34 Z" />
+        <path class="dove__body" d="M8 44 C 22 40, 36 36, 48 38 C 58 40, 65 36, 71 30 C 75 26, 81 25, 85 28 L 94 29.5 L 86 33 C 85 41, 78 49, 66 53 C 52 58, 34 56, 20 51 L 2 58 L 11 48 Z" />
+        <path class="dove__wing dove__wing--front" d="M50 40 C 46 26, 34 14, 16 8 C 36 8, 58 18, 66 36 Z" />
+        <circle cx="80" cy="30" r="1.3" class="dove__eye" />
+      </symbol>
+      <symbol id="cross" viewBox="0 0 40 60">
+        <path d="M18 0h4v16h14v4H22v40h-4V20H4v-4h14z" />
+      </symbol>
+      <symbol id="drop" viewBox="0 0 24 34">
+        <path d="M12 0 C 12 0 0 14 0 22 a12 12 0 0 0 24 0 C 24 14 12 0 12 0 Z" />
+      </symbol>
+    </defs>
+  </svg>
+
+  <!-- Portada -->
+  <div class="cover" id="cover">
+    <div class="cover__half cover__half--l"></div>
+    <div class="cover__half cover__half--r"></div>
+    <div class="cover__center">
+      <p class="eyebrow">Tienes una invitación</p>
+      <button class="seal" id="openBtn" aria-label="Abrir invitación">
+        <span class="seal__ring"></span>
+        <span class="seal__monogram">A<em>&amp;</em>A</span>
+      </button>
+      <p class="cover__hint">Toca el sello para abrir</p>
+    </div>
+  </div>
+
+  <!-- Fondo -->
+  <div class="sky" aria-hidden="true"></div>
+  <canvas class="particles" id="particles" aria-hidden="true"></canvas>
+
+  <main>
+
+    <!-- 1 · Cielo -->
+    <section class="scene hero" data-scene style="--len: 260">
+      <div class="sticky">
+        <div class="rays" aria-hidden="true"></div>
+
+        <div class="hero__content" data-t="in:0,.6;out:.7,1">
+          <svg class="hero__cross"><use href="#cross" /></svg>
+          <p class="eyebrow">Acompáñanos a celebrar</p>
+          <h1 class="hero__title script">Nuestro Bautizo</h1>
+          <p class="hero__names">Alitel Guadalupe <span>&amp;</span> Angel David</p>
+          <p class="hero__date">07 · Noviembre · 2026</p>
+        </div>
+
+        <div class="hero__doves" data-t="in:.15,.75" aria-hidden="true">
+          <svg class="dove dove--a"><use href="#dove" /></svg>
+          <svg class="dove dove--b"><use href="#dove" /></svg>
+        </div>
+
+        <div class="clouds" data-t="in:0,.75" aria-hidden="true">
+          <div class="cloud" style="--x: -18vw; --y: 58svh; --w: 80vw; --dir: -1; --dy: 6;  --sc: 1.1"></div>
+          <div class="cloud" style="--x: 40vw;  --y: 64svh; --w: 85vw; --dir: 1;  --dy: 8;  --sc: 1.2"></div>
+          <div class="cloud" style="--x: -30vw; --y: 8svh;  --w: 70vw; --dir: -1; --dy: -10; --sc: .9"></div>
+          <div class="cloud" style="--x: 62vw;  --y: 14svh; --w: 60vw; --dir: 1;  --dy: -8; --sc: .8"></div>
+          <div class="cloud" style="--x: 10vw;  --y: 78svh; --w: 90vw; --dir: 0;  --dy: 30; --sc: 1.3"></div>
+          <div class="cloud cloud--front" style="--x: -40vw; --y: 35svh; --w: 75vw; --dir: -1.4; --dy: 0; --sc: 1.2"></div>
+          <div class="cloud cloud--front" style="--x: 68vw;  --y: 40svh; --w: 75vw; --dir: 1.4;  --dy: 0; --sc: 1.2"></div>
+        </div>
+
+        <div class="scroll-cue" data-t="out:0,.12">
+          <span>Desliza</span>
+          <i></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2 · Los hermanitos -->
+    <section class="scene twins" data-scene style="--len: 380">
+      <div class="sticky">
+        <p class="eyebrow twins__intro" data-t="in:0,.15;out:.88,1">Dos corazones · una misma bendición</p>
+
+        <div class="twins__stage">
+          <figure class="kid kid--girl" data-t="in:.05,.38;out:.88,1">
+            <div class="kid__frame"><div class="kid__img"><img src="images/girl.jpeg" alt="Alitel Guadalupe" /></div></div>
+            <figcaption>
+              <span class="kid__first script">Alitel</span>
+              <span class="kid__second">Guadalupe</span>
+            </figcaption>
+          </figure>
+
+          <div class="twins__amp script" data-t="in:.42,.58;out:.88,1">&amp;</div>
+
+          <figure class="kid kid--boy" data-t="in:.22,.55;out:.88,1">
+            <div class="kid__frame"><div class="kid__img"><img src="images/boy.jpeg" alt="Angel David" /></div></div>
+            <figcaption>
+              <span class="kid__first script">Angel</span>
+              <span class="kid__second">David</span>
+            </figcaption>
+          </figure>
+        </div>
+
+        <p class="twins__surname" data-t="in:.58,.74;out:.88,1">López Hernández</p>
+      </div>
+    </section>
+
+    <!-- 3 · Oración -->
+    <section class="scene verse" data-scene id="verse" style="--len: 320">
+      <div class="sticky">
+        <div class="verse__wrap" data-t="in:0,.1;out:.62,.72">
+          <svg class="verse__dove"><use href="#dove" /></svg>
+          <p class="verse__text" id="verseText">Jesús, hoy nos presentamos ante ti para ser bañados por la gracia de tu amor.</p>
+        </div>
+
+        <div class="drop" data-t="in:.7,.84" aria-hidden="true">
+          <svg><use href="#drop" /></svg>
+        </div>
+        <div class="ripple" data-t="in:.82,1" aria-hidden="true">
+          <i></i><i></i><i></i>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · Fecha -->
+    <section class="section date">
+      <div class="date__card reveal">
+        <span class="date__day">Sábado</span>
+        <span class="date__num">07</span>
+        <span class="date__month">de Noviembre</span>
+        <span class="date__year">2026</span>
+        <span class="date__divider" aria-hidden="true"></span>
+        <span class="date__time">12:30 hrs</span>
+      </div>
+
+      <div class="countdown__block reveal" id="countdown">
+        <p class="countdown__label script">Faltan</p>
+        <div class="countdown">
+          <div><b data-unit="d">00</b><span>días</span></div>
+          <div><b data-unit="h">00</b><span>horas</span></div>
+          <div><b data-unit="m">00</b><span>min</span></div>
+          <div><b data-unit="s">00</b><span>seg</span></div>
+        </div>
+      </div>
+      <p class="countdown__done script" id="countdownDone" hidden>¡Hoy es el gran día!</p>
+    </section>
+
+    <!-- 5 · Itinerario -->
+    <section class="section itinerary" data-scene="view">
+      <p class="eyebrow reveal">Itinerario</p>
+      <h2 class="section__title script reveal">¿Dónde nos vemos?</h2>
+
+      <div class="timeline">
+        <div class="timeline__line" data-t="in:.15,.6"><span></span></div>
+
+        <article class="event reveal">
+          <div class="event__icon">
+            <svg viewBox="0 0 48 48"><path d="M24 3v8M20.5 6.5h7M13 22l11-11 11 11M15 20v22h18V20M7 42h34M7 42V31l8-6M41 42V31l-8-6M21 42v-7a3 3 0 0 1 6 0v7M24 25.5v.01" /></svg>
+          </div>
+          <span class="event__time">12:30 hrs</span>
+          <h3 class="event__title">Santa Misa</h3>
+          <p class="event__place">Iglesia de San Rafael</p>
+          <p class="event__addr">Av. Hidalgo, Col. Centro<br />Teziutlán, Puebla</p>
+          <a class="btn btn--small" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&query=Iglesia+de+San+Rafael+Av+Hidalgo+Centro+Teziutl%C3%A1n+Puebla">Cómo llegar</a>
+        </article>
+
+        <article class="event reveal">
+          <div class="event__icon">
+            <svg viewBox="0 0 48 48"><g transform="rotate(-14 16 24)"><path d="M10 6h11l-1 13a4.5 4.5 0 0 1-9 0zM15.5 23.5V38M11 38h9M10.6 12h10" /></g><g transform="rotate(14 32 24)"><path d="M27 6h11l-1 13a4.5 4.5 0 0 1-9 0zM32.5 23.5V38M28 38h9M27.6 12h10" /></g><path d="M24 2v3M19.5 3.5l1.5 2M28.5 3.5l-1.5 2" /></svg>
+          </div>
+          <span class="event__time">Al terminar la misa</span>
+          <h3 class="event__title">Recepción</h3>
+          <p class="event__place">Salón de fiestas</p>
+          <p class="event__addr">Privada Doctores #4, El Chowis<br />Teziutlán, Puebla</p>
+          <a class="btn btn--small" target="_blank" rel="noopener"
+             href="https://www.google.com/maps/search/?api=1&query=Privada+Doctores+4+El+Chowis+Teziutl%C3%A1n+Puebla">Cómo llegar</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6 · Detalles -->
+    <section class="section details">
+      <p class="eyebrow reveal">Para tomar en cuenta</p>
+      <div class="details__grid">
+        <div class="detail reveal">
+          <svg viewBox="0 0 48 48"><circle cx="24" cy="26" r="16" /><path d="M24 16v10l6 4M20 4h8M24 4v6" /></svg>
+          <h4>Puntualidad</h4>
+          <p>La misa comienza a las 12:30. Te sugerimos llegar unos minutos antes.</p>
+        </div>
+        <div class="detail reveal">
+          <svg viewBox="0 0 48 48"><rect x="8" y="18" width="32" height="24" rx="2" /><path d="M6 12h36v6H6zM24 12v30M24 12c-4-8-14-8-12-2 1 3 8 2 12 2zM24 12c4-8 14-8 12-2-1 3-8 2-12 2z" /></svg>
+          <h4>Regalos</h4>
+          <p>Tu presencia es nuestro mejor regalo. Cualquier detalle será recibido con mucho cariño.</p>
+        </div>
+        <div class="detail reveal">
+          <svg viewBox="0 0 48 48"><rect x="5" y="13" width="38" height="27" rx="4" /><circle cx="24" cy="26" r="8" /><path d="M16 13l3-5h10l3 5" /></svg>
+          <h4>Recuerdos</h4>
+          <p>Comparte tus fotos del día con <b>#BautizoAlitelYAngel</b></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7 · Confirmación (se muestra si hay número en CONFIG.whatsapp) -->
+    <section class="section rsvp" id="rsvp" hidden>
+      <p class="eyebrow reveal">Confirma tu asistencia</p>
+      <h2 class="section__title script reveal">Nos encantaría verte</h2>
+      <p class="rsvp__text reveal">Ayúdanos a preparar todo con cariño confirmando tu asistencia.</p>
+      <a class="btn btn--wa reveal" id="waBtn" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2a8.2 8.2 0 0 1-4.2-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.3-.4.7-1.4.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2 5.2 5.2 0 0 0 1.1 2.7 11.8 11.8 0 0 0 4.5 4c1.7.7 2.3.8 3.2.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.2-1.2-.1-.1-.3-.2-.5-.3z" /></svg>
+        Confirmar por WhatsApp
+      </a>
+    </section>
+
+    <!-- 8 · Cierre -->
+    <section class="scene finale" data-scene id="finale" style="--len: 240">
+      <div class="sticky">
+        <div class="petals" id="petals" aria-hidden="true"></div>
+
+        <div class="finale__duo">
+          <div class="finale__photo finale__photo--girl" data-t="in:0,.45"><img src="images/girl.jpeg" alt="" /></div>
+          <div class="finale__photo finale__photo--boy" data-t="in:0,.45"><img src="images/boy.jpeg" alt="" /></div>
+        </div>
+
+        <h2 class="finale__title script" data-t="in:.3,.65">Los esperamos</h2>
+        <p class="finale__sign" data-t="in:.55,.8">Con amor, familia López Hernández</p>
+
+        <div class="finale__doves" data-t="in:.45,1" aria-hidden="true">
+          <svg class="dove dove--c"><use href="#dove" /></svg>
+          <svg class="dove dove--d"><use href="#dove" /></svg>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="main.js"></script>
+</body>
+</html>
