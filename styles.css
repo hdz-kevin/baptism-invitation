@@ -485,6 +485,17 @@ img { display: block; max-width: 100%; }
 
 /* ---------- 3 · Oración ---------- */
 
+.twins,
+.twins .sticky,
+.verse,
+.verse .sticky {
+  min-height: 0;
+}
+.twins .sticky,
+.verse .sticky {
+  padding: clamp(80px, 14svh, 140px) 22px;
+}
+
 .verse__wrap {
   position: relative;
   z-index: 2;
@@ -531,7 +542,7 @@ img { display: block; max-width: 100%; }
 .ripple {
   position: absolute;
   left: 50%;
-  top: 50svh;
+  top: 50%;
   width: 0;
   height: 0;
 }
