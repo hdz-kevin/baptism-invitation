@@ -491,7 +491,9 @@ img { display: block; max-width: 100%; }
 .verse .sticky {
   min-height: 0;
 }
-.twins .sticky,
+.twins .sticky {
+  padding: clamp(80px, 14svh, 140px) 0;
+}
 .verse .sticky {
   padding: clamp(80px, 14svh, 140px) 22px;
 }
